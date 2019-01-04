@@ -1,7 +1,7 @@
 /* Copyright (c) 2018, wang wenzhi */
 
-/* The implementation of thread-safe bit vector, which support opeartions like:
- *     bvCrate, bvDestroy, bvAppend, bvSet, bvGet, bvRemove, bvClear
+/* The implementation of thread-safe (TODO) bit vector, which support opeartions
+ * like: bvCreate, bvDestroy, bvAppend, bvSet, bvGet, bvRemove, bvClear
  *
  * For benchmark data, please check bvBench.c
  */

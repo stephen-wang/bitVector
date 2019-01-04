@@ -1,18 +1,70 @@
 /* Copyright (c) 2018, wang wenzhi */
 
 /* Benchmark testing on bv.c:
- *     1) 100K bits of append
- *     2) 1M bits of append
- *     3) 10M bits of append
- *     4) 100M bits of append
- *     5) 10K bits of set 
- *     6) 100K bits of set 
- *     7) 1M bits of set 
- *     8) 10K bits of remove 
- *     9) 100K bits of remove 
- *     10) 1M bits of remove 
+ *     1) 1M bits of append
+ *     2) 10M bits of append
+ *     3) 100M bits of append
+ *     4) 1M bits of set 
+ *     5) 10M bits of set 
+ *     6) 100M bits of set 
+ *     7) 1M bits of remove 
+ *     8) 10M bits of remove 
+ *     9) 100M bits of remove 
  *
- *     TODO: testing with multiple threads
+ * One result from my machine:
+ *      ####BitVector Benchmark########
+ *      Operation: Append
+ *      Bits: 1000000
+ *      Duration: 00:00:00
+ *      ###############################
+ *
+ *      ####BitVector Benchmark########
+ *      Operation: Append
+ *      Bits: 10000000
+ *      Duration: 00:00:00
+ *      ###############################
+ * 
+ *      ####BitVector Benchmark########
+ *      Operation: Append
+ *      Bits: 100000000
+ *      Duration: 00:00:06
+ *      ###############################
+ *
+ *      ####BitVector Benchmark########
+ *      Operation: Set
+ *      Bits: 1000000
+ *      Duration: 00:00:00
+ *      ###############################
+ *
+ *      ####BitVector Benchmark########
+ *      Operation: Set
+ *      Bits: 10000000
+ *      Duration: 00:00:01
+ *      ###############################
+ *
+ *      ####BitVector Benchmark########
+ *      Operation: Set
+ *      Bits: 100000000
+ *      Duration: 00:00:13
+ *      ###############################
+ *
+ *      ####BitVector Benchmark########
+ *      Operation: Remove
+ *      Bits: 1000000
+ *      Duration: 00:00:00
+ *      ###############################
+ *
+ *      ####BitVector Benchmark########
+ *      Operation: Remove
+ *      Bits: 10000000
+ *      Duration: 00:00:01
+ *      ###############################
+ *
+ *      ####BitVector Benchmark########
+ *      Operation: Remove
+ *      Bits: 100000000
+ *      Duration: 00:00:15
+ *      ###############################
  *
  *     TODO: testing with multiple threads
  */
@@ -142,8 +194,8 @@ int main(int argc, char **argv)
     bvBenchmark_Set(10000000);  // 10M
     bvBenchmark_Set(100000000); // 100M
 
-    bvBenchmark_Remove(10000);    // 10K
-    bvBenchmark_Remove(100000);   // 100K
-    bvBenchmark_Remove(10000000); // 1M
+    bvBenchmark_Remove(1000000);   // 1M
+    bvBenchmark_Remove(10000000); // 10M
+    bvBenchmark_Remove(100000000); // 100M
     printf("%s passed\n", argv[0]);
 }
