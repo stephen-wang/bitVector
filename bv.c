@@ -38,7 +38,7 @@ struct BitVector {
 
 
 #ifdef DEBUG
-#define Debug(fmt, ...)  printf("Debug " fmt, __args__)
+#define Debug(fmt, ...)  printf("Debug " fmt, __VA_ARGS__)
 #else
 #define Debug(fmt, ...)
 #endif
@@ -152,7 +152,7 @@ int bvSet(BitVector *bv,  // IN/OUT
           uint8_t val)    // IN
 {
     if (bv == NULL || index >= bv->length) {
-        Debug("%s: invalid paramter\n", __FUNCTION__)
+        Debug("%s: invalid paramter\n", __FUNCTION__);
         return -1;
     }
 
@@ -160,11 +160,20 @@ int bvSet(BitVector *bv,  // IN/OUT
     uint64_t byteIndex = BV_BYTE_INDEX(index);
 
     assert(bitIndex < BITS_PER_BYTE && byteIndex < bv->bufSize);
+    //Debug("%s: index %lu, value %u\n", __FUNCTION__, index, val);
     if (val == 1) {
         BV_SET_BIT(bv->buf[byteIndex], bitIndex);
     } else {
         BV_CLEAR_BIT(bv->buf[byteIndex], bitIndex);
     }
+
+    /*
+    uint8_t newVal; 
+    bvGet(bv, index, &newVal);
+    Debug("%s: index %lu, value %u, real value: %u\n", __FUNCTION__, index, val, newVal);
+    */
+
+    return 0;
 }
 
 
@@ -178,20 +187,21 @@ int bvSet(BitVector *bv,  // IN/OUT
  *
  *******************************************************************/
 
-int bvGet(const BitVector *bv, // IN
-          uint64_t index,      // IN
-          uint8_t *pVal)       // OUT
+uint8_t bvGet(const BitVector *bv, // IN
+              uint64_t index,      // IN
+              uint8_t *pVal)       // OUT
 {
     if (bv==NULL || pVal == NULL || index >= bv->length) {
         Debug("%s: invalid parameter\n", __FUNCTION__);
         return -1;
     }
 
-    uint8_t bitIndex = BV_BYTE_INDEX(index);
+    uint8_t bitIndex = BV_BIT_INDEX(index);
     uint64_t byteIndex = BV_BYTE_INDEX(index);
 
-    assert(bitIndex < 8 && byteIndex < bv->bufSize);
-    return BV_BIT_VAL(bv->buf[byteIndex], bitIndex);
+    assert(bitIndex < BITS_PER_BYTE && byteIndex < bv->bufSize);
+    *pVal = BV_BIT_VAL(bv->buf[byteIndex], bitIndex);
+    return 0;
 }
 
 
@@ -218,9 +228,12 @@ int bvAppend(BitVector *bv, // IN/OUT
         return -1;
     }
 
-    bvSet(bv, bv->length, val);
     bv->length++;
-    return 0;
+    int rc = bvSet(bv, bv->length-1, val);
+    if (rc != 0) {
+        bv->length--;
+    }
+    return rc;
 }
 
 
@@ -273,4 +286,31 @@ int bvClear(BitVector *bv) // IN/OUT
 
     bv->length = 0;
     return 0;
+}
+
+
+/*******************************************************************
+ * -- bvPrint
+ *  
+ *    Output bit vector
+ *
+ * Return:
+ *     None
+ *
+ *******************************************************************/
+
+void bvDump(const BitVector *bv) // IN
+{
+    printf("Bitvector length: %lu, capacity: %lu, bits:\n", bv->length, bv->capacity);
+    if (bv == NULL) {
+        printf("(emtpy)\n");
+        return;
+    }
+
+    uint8_t val;
+    for(uint64_t i=0; i < bv->length; i++) {
+        bvGet(bv, i, &val);
+        printf("%u", val);
+    }
+    printf("\n");
 }

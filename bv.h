@@ -16,10 +16,12 @@ uint64_t bvLength(const BitVector *bv);
 uint64_t bvCapacity(const BitVector *bv);
 
 int bvSet(BitVector *bv, uint64_t index, uint8_t val);
-int bvGet(const BitVector *bv, uint64_t index, uint8_t *pVal);
+uint8_t bvGet(const BitVector *bv, uint64_t index, uint8_t *pVal);
 
 int bvAppend(BitVector *bv, uint8_t val);
 int bvRemove(BitVector *bv, uint64_t index);
 int bvClear(BitVector *bv);
+
+void bvDump(const BitVector *bv);
 
 #endif
